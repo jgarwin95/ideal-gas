@@ -2,7 +2,7 @@
 
 namespace idealgas {
 
-namespace visualizer {
+namespace container {
 
 IdealGasApp::IdealGasApp()
     : gas_container_(glm::vec2(kMargin, kMargin), kWindowSize - 2 * kMargin) {
@@ -17,6 +17,10 @@ void IdealGasApp::draw() {
   gas_container_.Draw();
 }
 
+void IdealGasApp::update() {
+  gas_container_.Update();
+}
+
 void IdealGasApp::keyDown(ci::app::KeyEvent event) {
   switch (event.getCode()) {
     case ci::app::KeyEvent::KEY_SPACE: {
@@ -28,6 +32,6 @@ void IdealGasApp::keyDown(ci::app::KeyEvent event) {
   }
 }
 
-}  // namespace visualizer
+}  // namespace container
 
 }  // namespace idealgas

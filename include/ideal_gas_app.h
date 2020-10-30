@@ -7,7 +7,7 @@
 
 namespace idealgas {
 
-namespace visualizer {
+namespace container {
 
 /**
  * Allows a user to draw a digit on a sketchpad and uses Naive Bayes to
@@ -18,6 +18,7 @@ class IdealGasApp : public ci::app::App {
   IdealGasApp();
 
   void draw() override;
+  void update() override;
   void keyDown(ci::app::KeyEvent event) override;
 
 
@@ -28,6 +29,6 @@ class IdealGasApp : public ci::app::App {
   Gas_container gas_container_;
 };
 
-}  // namespace visualizer
+}  // namespace container
 
 }  // namespace idealgas

@@ -4,7 +4,7 @@
 
 #include <ideal_gas_app.h>
 
-using idealgas::visualizer::IdealGasApp;
+using idealgas::container::IdealGasApp;
 
 void prepareSettings(IdealGasApp::Settings* settings) {
   settings->setResizable(false);

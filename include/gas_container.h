@@ -1,10 +1,11 @@
 #pragma once
 
 #include "cinder/gl/gl.h"
+#include "gas_particle.h"
 
 namespace idealgas {
 
-namespace visualizer {
+namespace container {
 
 /**
  * A sketchpad which will be displayed in the Cinder application and respond to
@@ -27,14 +28,16 @@ class Gas_container {
    * Displays the current state of the sketchpad in the Cinder application.
    */
   void Draw() const;
+  void Update();
 
  private:
   glm::vec2 top_left_corner_;
   double container_size_;
+  std::vector<Gas_Particle> particles_;
 
   ci::Rectf container_rect_;
 };
 
-}  // namespace visualizer
+}  // namespace container
 
 }  // namespace idealgas
