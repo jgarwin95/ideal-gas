@@ -54,7 +54,7 @@ include("${CINDER_PATH}/proj/cmake/modules/cinderMakeApp.cmake")
 list(APPEND SOURCE_FILES    ${CORE_SOURCE_FILES}
         # add some files here i.e. "src/visualizer/naive_bayes_app.cc"
         src/ideal_gas_app.cc
-        src/visualizer.cc
+        src/gas_container.cc
         )
 
 list(APPEND TEST_FILES tests/ideal_gas_test.cc# add test files here i.e. "tests/test_classifier.cc"

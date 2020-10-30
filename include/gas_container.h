@@ -10,7 +10,7 @@ namespace visualizer {
  * A sketchpad which will be displayed in the Cinder application and respond to
  * mouse events.
  */
-class Sketchpad {
+class Gas_container {
  public:
   /**
    * Creates a sketchpad.
@@ -21,7 +21,7 @@ class Sketchpad {
    * @param sketchpad_size      the side length of the sketchpad, measured in
    *                            screen pixels
    */
-  Sketchpad(const glm::vec2& top_left_corner, double sketchpad_size);
+  Gas_container(const glm::vec2& top_left_corner, double container_size);
 
   /**
    * Displays the current state of the sketchpad in the Cinder application.
@@ -30,9 +30,9 @@ class Sketchpad {
 
  private:
   glm::vec2 top_left_corner_;
+  double container_size_;
 
-  double sketchpad_size_;
-
+  ci::Rectf container_rect_;
 };
 
 }  // namespace visualizer

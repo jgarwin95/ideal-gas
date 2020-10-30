@@ -3,7 +3,7 @@
 #include "cinder/app/App.h"
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
-#include "visualizer.h"
+#include "gas_container.h"
 
 namespace idealgas {
 
@@ -25,7 +25,7 @@ class IdealGasApp : public ci::app::App {
   const double kMargin = 100;
 
  private:
-  Sketchpad sketchpad_;
+  Gas_container gas_container_;
 };
 
 }  // namespace visualizer
