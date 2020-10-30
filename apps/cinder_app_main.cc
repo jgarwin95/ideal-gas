@@ -4,12 +4,12 @@
 
 #include <ideal_gas_app.h>
 
-using naivebayes::visualizer::NaiveBayesApp;
+using idealgas::visualizer::IdealGasApp;
 
-void prepareSettings(NaiveBayesApp::Settings* settings) {
+void prepareSettings(IdealGasApp::Settings* settings) {
   settings->setResizable(false);
 }
 
 // This line is a macro that expands into an "int main()" function.
-CINDER_APP(NaiveBayesApp, ci::app::RendererGl, prepareSettings);
+CINDER_APP(IdealGasApp, ci::app::RendererGl, prepareSettings);
 
