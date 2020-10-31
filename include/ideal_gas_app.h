@@ -19,6 +19,7 @@ class IdealGasApp : public ci::app::App {
 
   void draw() override;
   void update() override;
+  void setup() override;
   void keyDown(ci::app::KeyEvent event) override;
 
 
@@ -27,6 +28,10 @@ class IdealGasApp : public ci::app::App {
 
  private:
   Gas_container gas_container_;
+
+  bool is_timer_enabled_ = false;
+  std::chrono::time_point<std::chrono::system_clock> start_timer_, end_timer_;
+
 };
 
 }  // namespace container

@@ -18,6 +18,7 @@ Gas_container::Gas_container(const glm::vec2 &top_left_corner, double container_
 }
 
 void Gas_container::Generate_particle() {
+  std::cout << "particle is generated!" << std::endl;
   particles_.emplace_back(top_left_corner_ + glm::vec2(container_size_/2, container_size_/2),
                           glm::vec2(2, -1.5));
 }
