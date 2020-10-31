@@ -51,14 +51,14 @@ void Gas_container::Update()  {
     if (((particle.GetPosition().x  - radius <= container_rect_.x1) && CheckOppositeDirection(particle, "left")) ||
     ((particle.GetPosition().x  + radius >= container_rect_.x2) && CheckOppositeDirection(particle, "right"))) {
       // Flip x direction
-      particle.Reverse_X_direction();
+      particle.ReverseXDirection();
     }
 
     // check if the particle is touching a top/bottom wall
     if (((particle.GetPosition().y  + radius >= container_rect_.y2) && CheckOppositeDirection(particle, "bottom")) ||
         ((particle.GetPosition().y  - radius <= container_rect_.y1) && CheckOppositeDirection(particle, "top"))) {
       // Flip y direction
-      particle.Reverse_Y_direction();
+      particle.ReverseYDirection();
     }
     for (size_t i = particle_counter + 1; i < particles_.size() - 1; i++) {
       Gas_Particle other = particles_.at(i);
@@ -101,7 +101,7 @@ bool Gas_container::CheckOppositeDirection(const Gas_Particle &particle, std::st
   return result < 0;
 }
 
-std::vector<Gas_Particle> Gas_container::Get_particles() {
+const std::vector<Gas_Particle>& Gas_container::Get_particles() const {
   return particles_;
 }
 

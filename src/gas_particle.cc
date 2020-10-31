@@ -19,13 +19,13 @@ void Gas_Particle::Move() {
   position_ += velocity_;
 }
 
-void Gas_Particle::Reverse_X_direction() {
+void Gas_Particle::ReverseXDirection() {
   // 2x2 matrix denoting transformation of flipping x direction
   glm::mat2x2 flip_x(-1,0,0,1);
   velocity_ = flip_x * velocity_;
 }
 
-void Gas_Particle::Reverse_Y_direction() {
+void Gas_Particle::ReverseYDirection() {
   // 2x2 matrix denoting transformation of flipping y direction
   glm::mat2x2 flip_x(1,0,0,-1);
   velocity_ = flip_x * velocity_;

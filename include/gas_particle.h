@@ -17,8 +17,8 @@ class Gas_Particle {
   Gas_Particle(glm::vec2 position, glm::vec2 velocity);
   void draw();
   void Move();
-  void Reverse_X_direction();
-  void Reverse_Y_direction();
+  void ReverseXDirection();
+  void ReverseYDirection();
 
   // Getters & Setters
   const glm::vec2 &GetPosition() const;
