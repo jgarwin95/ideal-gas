@@ -24,7 +24,7 @@ void IdealGasApp::update() {
 void IdealGasApp::keyDown(ci::app::KeyEvent event) {
   switch (event.getCode()) {
     case ci::app::KeyEvent::KEY_SPACE: {
-      break;
+      gas_container_.Generate_particle();
     }
 
     case ci::app::KeyEvent::KEY_DELETE:

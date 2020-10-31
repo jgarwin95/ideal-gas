@@ -3,6 +3,7 @@
 //
 
 #include "gas_particle.h"
+#include <math.h>
 
 namespace idealgas {
 
@@ -30,11 +31,24 @@ void Gas_Particle::Reverse_Y_direction() {
   velocity_ = flip_x * velocity_;
 }
 
-glm::vec2 Gas_Particle::Get_Position() {
+void Gas_Particle::Handle_collision(Gas_Particle &other) {
+  // Elastic collision equation
+  glm::vec2 velo_diff = velocity_ - other.GetVelocity();
+  glm::vec2 pos_diff = position_ - other.GetPosition();
+  float denom = pow(pos_diff.x, 2) + pow(pos_diff.y, 2);
+
+  velocity_ = velocity_ - (glm::dot(velo_diff, pos_diff)/denom * pos_diff);
+}
+
+const glm::vec2& Gas_Particle::GetPosition() const {
   return position_;
 }
 
-float Gas_Particle::Get_radius() {
+const glm::vec2& Gas_Particle::GetVelocity() const {
+  return velocity_;
+}
+
+float Gas_Particle::GetRadius() const {
   return kRadius;
 }
 

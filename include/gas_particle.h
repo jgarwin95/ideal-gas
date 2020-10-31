@@ -21,8 +21,11 @@ class Gas_Particle {
   void Reverse_Y_direction();
 
   // Getters & Setters
-  glm::vec2 Get_Position();
-  float Get_radius();
+  const glm::vec2 &GetPosition() const;
+  const glm::vec2 &GetVelocity() const;
+  float GetRadius() const;
+
+  void Handle_collision(Gas_Particle &particle);
 
  private:
   glm::vec2 position_;

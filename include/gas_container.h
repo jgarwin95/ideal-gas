@@ -30,12 +30,19 @@ class Gas_container {
   void Draw() const;
   void Update();
 
+  void Generate_particle();
+  void Generate_particle(int x_loc, int y_loc, int x_vel, int y_vel);
+  std::vector<Gas_Particle> Get_particles();
+
  private:
   glm::vec2 top_left_corner_;
   double container_size_;
   std::vector<Gas_Particle> particles_;
 
   ci::Rectf container_rect_;
+  bool Check_collision(const Gas_Particle &particle, const Gas_Particle &particle_1);
+  bool CheckOppositeDirection(const Gas_Particle &particle_1, const Gas_Particle &particle_2) const;
+  bool CheckOppositeDirection(const Gas_Particle &particle, std::string&& direction) const;
 };
 
 }  // namespace container
