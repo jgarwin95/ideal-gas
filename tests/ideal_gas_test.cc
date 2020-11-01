@@ -197,7 +197,52 @@ TEST_CASE("Inter-particle collisions", "[particle][collision]") {
                           container.Get_particles().at(1).GetPosition()) <= 20);
     REQUIRE(container.Get_particles().at(0).GetVelocity().x == -3); // swap directions in velocity
     REQUIRE(container.Get_particles().at(1).GetVelocity().x == 3);
+    container.Update();
+    REQUIRE(container.Get_particles().at(0).GetPosition().y == 25);
+    REQUIRE(container.Get_particles().at(0).GetPosition().x == 13);
+    REQUIRE(container.Get_particles().at(1).GetPosition().y == 25);
+    REQUIRE(container.Get_particles().at(1).GetPosition().x == 37);
   }
+
+  SECTION("Perfectly vertical collision with two particles") {
+    container.Generate_particle(25, 13, 0, 3);
+    container.Generate_particle(25, 37, 0, -3);
+    container.Update(); // particles should now be touching
+    REQUIRE(glm::distance(container.Get_particles().at(0).GetPosition(),
+                          container.Get_particles().at(1).GetPosition()) <= 20);
+    REQUIRE(container.Get_particles().at(0).GetVelocity().y == -3); // swap directions in velocity
+    REQUIRE(container.Get_particles().at(1).GetVelocity().y == 3);
+    container.Update(); // particles should now be touching
+    REQUIRE(container.Get_particles().at(0).GetPosition().y == 13);
+    REQUIRE(container.Get_particles().at(0).GetPosition().x == 25);
+    REQUIRE(container.Get_particles().at(1).GetPosition().y == 37);
+    REQUIRE(container.Get_particles().at(1).GetPosition().x == 25);
+  }
+
+  SECTION("Particle 1 moving in the +x, +y direction collides with particle 2 moving in the +x, +y direction") {
+    container.Generate_particle(25, 15, 3, 3);
+    container.Generate_particle(25, 36, 3, 1);
+    container.Update(); // particles should now be touching
+    REQUIRE(glm::distance(container.Get_particles().at(0).GetPosition(),
+                          container.Get_particles().at(1).GetPosition()) <= 20);
+    REQUIRE(container.Get_particles().at(0).GetVelocity() == glm::vec2(3,1));
+    REQUIRE(container.Get_particles().at(1).GetVelocity() == glm::vec2(3,3));
+    container.Update();
+    REQUIRE(container.Get_particles().at(0).GetPosition() == glm::vec2(31,19));
+    REQUIRE(container.Get_particles().at(1).GetPosition() == glm::vec2(31,40));
+  }
+
+  SECTION("Particle 1 moving in the +x, +y direction collides with particle 2 moving in the +x, -y direction") {
+    container.Generate_particle(25, 15, 3, 3);
+    container.Generate_particle(25, 36, 3, -3);
+    container.Update(); // particles should now be touching
+    REQUIRE(glm::distance(container.Get_particles().at(0).GetPosition(),
+                          container.Get_particles().at(1).GetPosition()) <= 20);
+    REQUIRE(container.Get_particles().at(0).GetVelocity() == glm::vec2(3,-3));
+    REQUIRE(container.Get_particles().at(1).GetVelocity() == glm::vec2(3,3));
+  }
+
+
 }
 
 } // namespace container
