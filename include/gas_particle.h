@@ -25,7 +25,7 @@ class Gas_Particle {
   const glm::vec2 &GetVelocity() const;
   float GetRadius() const;
 
-  void Handle_collision(Gas_Particle &particle);
+  void Handle_collision(glm::vec2 &other_velo, glm::vec2 &other_pos);
 
  private:
   glm::vec2 position_;

@@ -31,13 +31,11 @@ void Gas_Particle::ReverseYDirection() {
   velocity_ = flip_x * velocity_;
 }
 
-void Gas_Particle::Handle_collision(Gas_Particle &other) {
+void Gas_Particle::Handle_collision(glm::vec2 &other_velo, glm::vec2 &other_pos) {
   // Elastic collision equation
-  glm::vec2 velo_diff = velocity_ - other.GetVelocity();
-  glm::vec2 pos_diff = position_ - other.GetPosition();
-  float denom = pow(pos_diff.x, 2) + pow(pos_diff.y, 2);
-
-  velocity_ = velocity_ - (glm::dot(velo_diff, pos_diff)/denom * pos_diff);
+  glm::vec2 velo_diff = velocity_ - other_velo;
+  glm::vec2 pos_diff = position_ - other_pos;
+  velocity_ = velocity_ - (glm::dot(velo_diff, pos_diff)/pow(glm::length(pos_diff), 2) * pos_diff);
 }
 
 const glm::vec2& Gas_Particle::GetPosition() const {

@@ -20,7 +20,7 @@ Gas_container::Gas_container(const glm::vec2 &top_left_corner, double container_
 void Gas_container::Generate_particle() {
   std::cout << "particle is generated!" << std::endl;
   particles_.emplace_back(top_left_corner_ + glm::vec2(container_size_/2, container_size_/2),
-                          glm::vec2(2, -1.5));
+                          glm::vec2(3, -2));
 }
 
 void Gas_container::Generate_particle(int x_loc, int y_loc, int x_vel, int y_vel) {
@@ -40,12 +40,14 @@ void Gas_container::Draw() const {
 }
 
 void Gas_container::Update()  {
-  int particle_counter = 0;
-  // update each particle
   for (Gas_Particle& particle : particles_) {
-
-    // Move particle each frame
+    // Move each particle to it's final position for this frame
     particle.Move();
+  }
+
+  int particle_counter = 0;
+  // Handle any collisions associated with those final positions
+  for (Gas_Particle& particle : particles_) {
 
     float radius = particle.GetRadius();
     // check if the particle is touching a left/right wall
@@ -54,31 +56,49 @@ void Gas_container::Update()  {
       // Flip x direction
       particle.ReverseXDirection();
     }
-
     // check if the particle is touching a top/bottom wall
     if (((particle.GetPosition().y  + radius >= container_rect_.y2) && CheckOppositeDirection(particle, "bottom")) ||
         ((particle.GetPosition().y  - radius <= container_rect_.y1) && CheckOppositeDirection(particle, "top"))) {
       // Flip y direction
       particle.ReverseYDirection();
     }
-    for (size_t i = particle_counter + 1; i < particles_.size() - 1; i++) {
-      Gas_Particle other = particles_.at(i);
+
+    /*
+    for (Gas_Particle &other : particles_) {
+      if (Check_collision(particle, other) && CheckOppositeDirection(particle, other)) {
+        HandleCollision(particle, other);
+      }
+    }
+    */
+    for (size_t i = particle_counter + 1; i < particles_.size(); i++) {
+      Gas_Particle &other = particles_.at(i);
       // If they are touching and were heading in the same direction handle collision
       //TODO:: particle sticking is still a bug even though we are checking for directionality of the collision with the vector dot product... something isn't right.
       if (Check_collision(particle, other) && CheckOppositeDirection(particle, other)) {
-        particle.Handle_collision(other);
-        other.Handle_collision(particle);
+        HandleCollision(particle, other);
       }
     }
     // Increment current particle number
     particle_counter++;
   }
 }
+
+void Gas_container::HandleCollision(Gas_Particle &particle_1, Gas_Particle &particle_2) {
+  // Save initial state of particles
+  glm::vec2 vi_1 = particle_1.GetVelocity();
+  glm::vec2 vi_2 = particle_2.GetVelocity();
+  glm::vec2 xi_1 = particle_1.GetPosition();
+  glm::vec2 xi_2 = particle_2.GetPosition();
+  // Alter velocities based on previous saved state
+  particle_1.Handle_collision(vi_2, xi_2);
+  particle_2.Handle_collision(vi_1, xi_1);
+}
+
 bool Gas_container::Check_collision(const Gas_Particle &particle_1, const Gas_Particle &particle_2) {
   glm::vec2 pos1 = particle_1.GetPosition();
   glm::vec2 pos2 = particle_2.GetPosition();
   // return if the sum of the radii is less than the distance between the centers of the two particles
-  return (particle_1.GetRadius() + particle_2.GetRadius() >= sqrt(pow(pos1.x - pos2.x, 2) + pow(pos1.y - pos2.y, 2)));
+  return (particle_1.GetRadius() + particle_2.GetRadius() >= glm::distance(particle_1.GetPosition(), particle_2.GetPosition()));
 }
 
 bool Gas_container::CheckOppositeDirection(const Gas_Particle &particle_1, const Gas_Particle &particle_2) const {

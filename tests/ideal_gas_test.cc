@@ -135,6 +135,69 @@ TEST_CASE("Wall collisions", "[wall][collision]") {
     REQUIRE(container.Get_particles().at(0).GetPosition().x == 30); // particle is back to starting position after next frame
   }
 
+  SECTION("Top right corner wall collision") {
+    container.Generate_particle(35, 15, 6, -6);
+    container.Update();
+    REQUIRE(container.Get_particles().at(0).GetPosition().y == 9); // particle is technically past wall boundary with r = 10
+    REQUIRE(container.Get_particles().at(0).GetPosition().x == 41); // particle is technically past wall boundary with r = 10
+    REQUIRE(container.Get_particles().at(0).GetVelocity().y > 0); // particle is now moving in opposite y direction
+    REQUIRE(container.Get_particles().at(0).GetVelocity().x < 0); // particle is now moving in opposite x direction
+    container.Update();
+    REQUIRE(container.Get_particles().at(0).GetPosition().y == 15);
+    REQUIRE(container.Get_particles().at(0).GetPosition().x == 35);
+  }
+
+  SECTION("Bottom right corner wall collision") {
+    container.Generate_particle(35, 35, 6, 6);
+    container.Update();
+    REQUIRE(container.Get_particles().at(0).GetPosition().x == 41); // particle is technically past wall boundary with r = 10
+    REQUIRE(container.Get_particles().at(0).GetPosition().y == 41); // particle is technically past wall boundary with r = 10
+    REQUIRE(container.Get_particles().at(0).GetVelocity().y < 0);
+    REQUIRE(container.Get_particles().at(0).GetVelocity().x < 0);
+    container.Update();
+    REQUIRE(container.Get_particles().at(0).GetPosition().y == 35); // particle is back to starting position after next frame
+    REQUIRE(container.Get_particles().at(0).GetPosition().x == 35); // particle is back to starting position after next frame
+  }
+
+  SECTION("Top left corner wall collision") {
+    container.Generate_particle(15, 15, -6, -6);
+    container.Update();
+    REQUIRE(container.Get_particles().at(0).GetPosition().y == 9); // particle is technically past wall boundary with r = 10
+    REQUIRE(container.Get_particles().at(0).GetPosition().x == 9); // particle is technically past wall boundary with r = 10
+    REQUIRE(container.Get_particles().at(0).GetVelocity().y > 0); // particle is now moving in opposite y direction
+    REQUIRE(container.Get_particles().at(0).GetVelocity().x > 0); // particle is now moving in opposite x direction
+    container.Update();
+    REQUIRE(container.Get_particles().at(0).GetPosition().y == 15);
+    REQUIRE(container.Get_particles().at(0).GetPosition().x == 15);
+  }
+
+  SECTION("Bottom left corner wall collision") {
+    container.Generate_particle(15, 35, -6, 6);
+    container.Update();
+    REQUIRE(container.Get_particles().at(0).GetPosition().x == 9); // particle is technically past wall boundary with r = 10
+    REQUIRE(container.Get_particles().at(0).GetPosition().y == 41); // particle is technically past wall boundary with r = 10
+    REQUIRE(container.Get_particles().at(0).GetVelocity().y < 0);
+    REQUIRE(container.Get_particles().at(0).GetVelocity().x > 0);
+    container.Update();
+    REQUIRE(container.Get_particles().at(0).GetPosition().y == 35); // particle is back to starting position after next frame
+    REQUIRE(container.Get_particles().at(0).GetPosition().x == 15); // particle is back to starting position after next frame
+  }
+
+}
+
+TEST_CASE("Inter-particle collisions", "[particle][collision]") {
+
+  Gas_container container(glm::vec2(0,0), 50);
+
+  SECTION("Perfectly horizontal collision with two particles") {
+    container.Generate_particle(13, 25, 3, 0);
+    container.Generate_particle(37, 25, -3, 0);
+    container.Update(); // particles should now be touching
+    REQUIRE(glm::distance(container.Get_particles().at(0).GetPosition(),
+                          container.Get_particles().at(1).GetPosition()) <= 20);
+    REQUIRE(container.Get_particles().at(0).GetVelocity().x == -3); // swap directions in velocity
+    REQUIRE(container.Get_particles().at(1).GetVelocity().x == 3);
+  }
 }
 
 } // namespace container

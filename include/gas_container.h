@@ -43,6 +43,7 @@ class Gas_container {
   bool Check_collision(const Gas_Particle &particle, const Gas_Particle &particle_1);
   bool CheckOppositeDirection(const Gas_Particle &particle_1, const Gas_Particle &particle_2) const;
   bool CheckOppositeDirection(const Gas_Particle &particle, std::string&& direction) const;
+  void HandleCollision(Gas_Particle &particle_1, Gas_Particle &particle_2);
 };
 
 }  // namespace container
