@@ -136,6 +136,12 @@ void Gas_container::IncreaseParticleSpeed() {
   }
 }
 
+void Gas_container::DecreaseParticleSpeed() {
+  for (Gas_Particle &particle : particles_) {
+    particle.DecreaseSpeed();
+  }
+}
+
 }  // namespace container
 
 }  // namespace idealgas

@@ -58,6 +58,11 @@ void IdealGasApp::keyDown(ci::app::KeyEvent event) {
       break;
     }
 
+    case ci::app::KeyEvent::KEY_LEFT: {
+      gas_container_.DecreaseParticleSpeed();
+      break;
+    }
+
   }
 }
 

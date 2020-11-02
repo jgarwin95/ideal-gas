@@ -28,6 +28,7 @@ class Gas_Particle {
   void Handle_collision(glm::vec2 &other_velo, glm::vec2 &other_pos);
 
   void IncreaseSpeed();
+  void DecreaseSpeed();
  private:
   glm::vec2 position_;
   glm::vec2 velocity_;

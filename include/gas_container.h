@@ -36,6 +36,7 @@ class Gas_container {
 
   void Clear();
   void IncreaseParticleSpeed();
+  void DecreaseParticleSpeed();
  private:
   glm::vec2 top_left_corner_;
   double container_size_;
