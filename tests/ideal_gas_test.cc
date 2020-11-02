@@ -242,6 +242,114 @@ TEST_CASE("Inter-particle collisions", "[particle][collision]") {
     REQUIRE(container.Get_particles().at(1).GetVelocity() == glm::vec2(3,3));
   }
 
+  SECTION("Particle 1 moving in the +x, +y direction collides with particle 2 moving in the -x, +y direction") {
+    container.Generate_particle(14, 15, 3, 3);
+    container.Generate_particle(36, 15, -3, 3);
+    container.Update(); // particles should now be touching
+    REQUIRE(glm::distance(container.Get_particles().at(0).GetPosition(),
+                          container.Get_particles().at(1).GetPosition()) <= 20);
+    REQUIRE(container.Get_particles().at(0).GetVelocity() == glm::vec2(-3,3));
+    REQUIRE(container.Get_particles().at(1).GetVelocity() == glm::vec2(3,3));
+  }
+
+  SECTION("Particle 1 moving in the +x, +y direction collides with particle 2 moving in the -x, -y direction") {
+    container.Generate_particle(16, 16, 3, 3);
+    container.Generate_particle(35, 35, -3, -3);
+    container.Update(); // particles should now be touching
+    REQUIRE(glm::distance(container.Get_particles().at(0).GetPosition(),
+                          container.Get_particles().at(1).GetPosition()) <= 20);
+    REQUIRE(container.Get_particles().at(0).GetVelocity().x == Approx(-3));
+    REQUIRE(container.Get_particles().at(0).GetVelocity().y == Approx(-3));
+    REQUIRE(container.Get_particles().at(1).GetVelocity().x == Approx(3));
+    REQUIRE(container.Get_particles().at(1).GetVelocity().y == Approx(3));
+  }
+
+  SECTION("Particle 1 moving in the +x, -y direction collides with particle 2 moving in the +x, -y direction") {
+    container.Generate_particle(25, 14, 3, -3);
+    container.Generate_particle(25, 35, 5, -5);
+    container.Update(); // particles should now be touching
+    REQUIRE(glm::distance(container.Get_particles().at(0).GetPosition(),
+                          container.Get_particles().at(1).GetPosition()) <= 20);
+    REQUIRE(container.Get_particles().at(0).GetVelocity().x == Approx(2.8137));
+    REQUIRE(container.Get_particles().at(0).GetVelocity().y == Approx(-4.76986));
+    REQUIRE(container.Get_particles().at(1).GetVelocity().x == Approx(5.1863));
+    REQUIRE(container.Get_particles().at(1).GetVelocity().y == Approx(-3.23014));
+  }
+
+  SECTION("Particle 1 moving in the +x, -y direction collides with particle 2 moving in the -x, +y direction") {
+    container.Generate_particle(35, 16, -5, 5);
+    container.Generate_particle(16, 35, 5, -5);
+    container.Update(); // particles should now be touching
+    REQUIRE(glm::distance(container.Get_particles().at(0).GetPosition(),
+                          container.Get_particles().at(1).GetPosition()) <= 20);
+    REQUIRE(container.Get_particles().at(0).GetVelocity().x == Approx(5));
+    REQUIRE(container.Get_particles().at(0).GetVelocity().y == Approx(-5));
+    REQUIRE(container.Get_particles().at(1).GetVelocity().x == Approx(-5));
+    REQUIRE(container.Get_particles().at(1).GetVelocity().y == Approx(5));
+  }
+
+  SECTION("Particle 1 moving in the +x, -y direction collides with particle 2 moving in the -x, -y direction") {
+    container.Generate_particle(35, 16, -5, -5);
+    container.Generate_particle(16, 16, 5, -5);
+    container.Update(); // particles should now be touching
+    REQUIRE(glm::distance(container.Get_particles().at(0).GetPosition(),
+                          container.Get_particles().at(1).GetPosition()) <= 20);
+    REQUIRE(container.Get_particles().at(0).GetVelocity().x == Approx(5));
+    REQUIRE(container.Get_particles().at(0).GetVelocity().y == Approx(-5));
+    REQUIRE(container.Get_particles().at(1).GetVelocity().x == Approx(-5));
+    REQUIRE(container.Get_particles().at(1).GetVelocity().y == Approx(-5));
+  }
+
+  SECTION("Particle 1 moving in the -x, +y direction collides with particle 2 moving in the -x, +y direction") {
+    container.Generate_particle(35, 25, -5, 4);
+    container.Generate_particle(14, 25, -3, 5);
+    container.Update(); // particles should now be touching
+    REQUIRE(glm::distance(container.Get_particles().at(0).GetPosition(),
+                          container.Get_particles().at(1).GetPosition()) <= 20);
+    REQUIRE(container.Get_particles().at(0).GetVelocity().x == Approx(-3.05801));
+    REQUIRE(container.Get_particles().at(0).GetVelocity().y == Approx(3.89779));
+    REQUIRE(container.Get_particles().at(1).GetVelocity().x == Approx(-4.94199));
+    REQUIRE(container.Get_particles().at(1).GetVelocity().y == Approx(5.10221));
+  }
+
+  SECTION("Particle 1 moving in the -x, +y direction collides with particle 2 moving in the -x, -y direction") {
+    container.Generate_particle(35, 35, -3, -3);
+    container.Generate_particle(35, 14, -3, 3);
+    container.Update(); // particles should now be touching
+    REQUIRE(glm::distance(container.Get_particles().at(0).GetPosition(),
+                          container.Get_particles().at(1).GetPosition()) <= 20);
+    REQUIRE(container.Get_particles().at(0).GetVelocity().x == Approx(-3));
+    REQUIRE(container.Get_particles().at(0).GetVelocity().y == Approx(3));
+    REQUIRE(container.Get_particles().at(1).GetVelocity().x == Approx(-3));
+    REQUIRE(container.Get_particles().at(1).GetVelocity().y == Approx(-3));
+  }
+
+  SECTION("Particle 1 moving in the -x, -y direction collides with particle 2 moving in the -x, -y direction") {
+    container.Generate_particle(35, 35, -3, -5);
+    container.Generate_particle(35, 14, -4, -2);
+    container.Update(); // particles should now be touching
+    REQUIRE(glm::distance(container.Get_particles().at(0).GetPosition(),
+                          container.Get_particles().at(1).GetPosition()) <= 20);
+    REQUIRE(container.Get_particles().at(0).GetVelocity().x == Approx(-2.8369));
+    REQUIRE(container.Get_particles().at(0).GetVelocity().y == Approx(-2.0646));
+    REQUIRE(container.Get_particles().at(1).GetVelocity().x == Approx(-4.16308));
+    REQUIRE(container.Get_particles().at(1).GetVelocity().y == Approx(-4.93538));
+  }
+
+  SECTION("Particle 1 moving in the +x, 0 direction collides with stationary particle 2") {
+    container.Generate_particle(15, 25, 3, 0);
+    container.Generate_particle(36, 25, 0, 0);
+    container.Update(); // particles should now be touching
+    REQUIRE(glm::distance(container.Get_particles().at(0).GetPosition(),
+                          container.Get_particles().at(1).GetPosition()) <= 20);
+    REQUIRE(container.Get_particles().at(0).GetVelocity().x == Approx(0));
+    REQUIRE(container.Get_particles().at(0).GetVelocity().y == Approx(0));
+    REQUIRE(container.Get_particles().at(1).GetVelocity().x == Approx(3));
+    REQUIRE(container.Get_particles().at(1).GetVelocity().y == Approx(0));
+  }
+
+
+
 
 }
 

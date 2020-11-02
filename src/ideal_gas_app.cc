@@ -45,11 +45,19 @@ void IdealGasApp::keyDown(ci::app::KeyEvent event) {
         is_timer_enabled_ = true;
         start_timer_ = std::chrono::system_clock::now();
       }
-
+      break;
     }
 
-    case ci::app::KeyEvent::KEY_DELETE:
+    case ci::app::KeyEvent::KEY_DELETE: {
+      gas_container_.Clear();
       break;
+    }
+
+    case ci::app::KeyEvent::KEY_RIGHT: {
+      gas_container_.IncreaseParticleSpeed();
+      break;
+    }
+
   }
 }
 

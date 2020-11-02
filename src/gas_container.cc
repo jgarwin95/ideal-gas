@@ -126,6 +126,16 @@ const std::vector<Gas_Particle>& Gas_container::Get_particles() const {
   return particles_;
 }
 
+void Gas_container::Clear() {
+  particles_.clear();
+}
+
+void Gas_container::IncreaseParticleSpeed() {
+  for (Gas_Particle &particle : particles_) {
+    particle.IncreaseSpeed();
+  }
+}
+
 }  // namespace container
 
 }  // namespace idealgas

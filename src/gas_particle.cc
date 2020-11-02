@@ -50,5 +50,12 @@ float Gas_Particle::GetRadius() const {
   return kRadius;
 }
 
+void Gas_Particle::IncreaseSpeed() {
+  glm::vec2 test = velocity_ * 1.1f;
+  if (test.x < 3 || test.y < 3) {
+    velocity_ *= 1.1;
+  }
+}
+
 }
 

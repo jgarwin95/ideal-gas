@@ -34,6 +34,8 @@ class Gas_container {
   void Generate_particle(int x_loc, int y_loc, int x_vel, int y_vel);
   const std::vector<Gas_Particle>& Get_particles() const;
 
+  void Clear();
+  void IncreaseParticleSpeed();
  private:
   glm::vec2 top_left_corner_;
   double container_size_;
