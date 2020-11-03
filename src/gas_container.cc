@@ -50,6 +50,7 @@ void Gas_container::Update()  {
   for (Gas_Particle& particle : particles_) {
 
     float radius = particle.GetRadius();
+
     // check if the particle is touching a left/right wall
     if (((particle.GetPosition().x  - radius <= container_rect_.x1) && CheckOppositeDirection(particle, "left")) ||
     ((particle.GetPosition().x  + radius >= container_rect_.x2) && CheckOppositeDirection(particle, "right"))) {
@@ -63,17 +64,9 @@ void Gas_container::Update()  {
       particle.ReverseYDirection();
     }
 
-    /*
-    for (Gas_Particle &other : particles_) {
-      if (Check_collision(particle, other) && CheckOppositeDirection(particle, other)) {
-        HandleCollision(particle, other);
-      }
-    }
-    */
     for (size_t i = particle_counter + 1; i < particles_.size(); i++) {
       Gas_Particle &other = particles_.at(i);
       // If they are touching and were heading in the same direction handle collision
-      //TODO:: particle sticking is still a bug even though we are checking for directionality of the collision with the vector dot product... something isn't right.
       if (Check_collision(particle, other) && CheckOppositeDirection(particle, other)) {
         HandleCollision(particle, other);
       }
@@ -89,7 +82,7 @@ void Gas_container::HandleCollision(Gas_Particle &particle_1, Gas_Particle &part
   glm::vec2 vi_2 = particle_2.GetVelocity();
   glm::vec2 xi_1 = particle_1.GetPosition();
   glm::vec2 xi_2 = particle_2.GetPosition();
-  // Alter velocities based on previous saved state
+  // Alter velocities based on previously saved state
   particle_1.Handle_collision(vi_2, xi_2);
   particle_2.Handle_collision(vi_1, xi_1);
 }

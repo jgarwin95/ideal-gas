@@ -51,7 +51,7 @@ float Gas_Particle::GetRadius() const {
 }
 
 void Gas_Particle::IncreaseSpeed() {
-  if (glm::length(velocity_ *= 1.01f) < kRadius)
+  if (glm::length(velocity_ *= 1.01f) < kRadius/2)
     velocity_ *= 1.01f;
 }
 

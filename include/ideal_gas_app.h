@@ -10,8 +10,7 @@ namespace idealgas {
 namespace container {
 
 /**
- * Allows a user to draw a digit on a sketchpad and uses Naive Bayes to
- * classify it.
+ * Simulation of ideal gases.
  */
 class IdealGasApp : public ci::app::App {
  public:
@@ -30,6 +29,9 @@ class IdealGasApp : public ci::app::App {
   Gas_container gas_container_;
 
   bool is_timer_enabled_ = false;
+  /**
+   * Timer variables for limiting the rate of particle generation through user input
+   */
   std::chrono::time_point<std::chrono::system_clock> start_timer_, end_timer_;
 
 };
