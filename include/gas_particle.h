@@ -18,6 +18,8 @@ class Gas_Particle {
    */
   Gas_Particle(glm::vec2 &position, glm::vec2 &velocity);
   Gas_Particle(glm::vec2 position, glm::vec2 velocity);
+  Gas_Particle(glm::vec2 &position, glm::vec2 &velocity, float mass);
+  Gas_Particle(glm::vec2 position, glm::vec2 velocity, float mass);
   /**
    * Draw particle to screen
    */
@@ -34,17 +36,13 @@ class Gas_Particle {
    * Flip y component of velocity vector using appropriate vector-matrix multiplication
    */
   void ReverseYDirection();
-
-  // Getters & Setters
-  const glm::vec2 &GetPosition() const;
-  const glm::vec2 &GetVelocity() const;
-  float GetRadius() const;
   /**
    * Apply inelastic collision equation to change velocity and position vectors
    * @param other_velo colliding partner's velocity vector
    * @param other_pos colliding partner's position vector
+   * @param other_mass colliding partner's mass
    */
-  void Handle_collision(glm::vec2 &other_velo, glm::vec2 &other_pos);
+  void Handle_collision(glm::vec2 &other_velo, glm::vec2 &other_pos, float other_mass);
   /**
    * Increase velocity by 1%
    */
@@ -53,10 +51,17 @@ class Gas_Particle {
    * Decrease velocity by 1%
    */
   void DecreaseSpeed();
+
+  // Getters & Setters
+  const glm::vec2 &GetPosition() const;
+  const glm::vec2 &GetVelocity() const;
+  float GetRadius() const;
+  float GetMass() const;
+
  private:
   glm::vec2 position_;
   glm::vec2 velocity_;
-
+  float mass_ = 1;
   float kRadius = 10;
 };
 

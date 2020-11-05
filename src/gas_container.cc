@@ -82,9 +82,11 @@ void Gas_container::HandleCollision(Gas_Particle &particle_1, Gas_Particle &part
   glm::vec2 vi_2 = particle_2.GetVelocity();
   glm::vec2 xi_1 = particle_1.GetPosition();
   glm::vec2 xi_2 = particle_2.GetPosition();
+  float m1 = particle_1.GetMass();
+  float m2 = particle_2.GetMass();
   // Alter velocities based on previously saved state
-  particle_1.Handle_collision(vi_2, xi_2);
-  particle_2.Handle_collision(vi_1, xi_1);
+  particle_1.Handle_collision(vi_2, xi_2, m2);
+  particle_2.Handle_collision(vi_1, xi_1, m1);
 }
 
 bool Gas_container::Check_collision(const Gas_Particle &particle_1, const Gas_Particle &particle_2) {

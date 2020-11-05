@@ -9,6 +9,10 @@ namespace idealgas {
 
 Gas_Particle::Gas_Particle(glm::vec2 &position, glm::vec2 &velocity) : position_(position), velocity_(velocity) {}
 Gas_Particle::Gas_Particle(glm::vec2 position, glm::vec2 velocity) : position_(position), velocity_(velocity) {}
+Gas_Particle::Gas_Particle(glm::vec2 position, glm::vec2 velocity, float mass) : position_(position), velocity_(velocity),
+                            mass_(mass){
+  kRadius = mass_*10;
+}
 
 void Gas_Particle::draw() {
   ci::gl::color(ci::Color("red"));
@@ -31,11 +35,12 @@ void Gas_Particle::ReverseYDirection() {
   velocity_ = flip_x * velocity_;
 }
 
-void Gas_Particle::Handle_collision(glm::vec2 &other_velo, glm::vec2 &other_pos) {
+void Gas_Particle::Handle_collision(glm::vec2 &other_velo, glm::vec2 &other_pos, float other_mass) {
   // Elastic collision equation
   glm::vec2 velo_diff = velocity_ - other_velo;
   glm::vec2 pos_diff = position_ - other_pos;
-  velocity_ = velocity_ - (glm::dot(velo_diff, pos_diff)/pow(glm::length(pos_diff), 2) * pos_diff);
+  float mass_term = mass_*2/(mass_ + other_mass);
+  velocity_ = velocity_ - mass_term*(glm::dot(velo_diff, pos_diff)/pow(glm::length(pos_diff), 2) * pos_diff);
 }
 
 const glm::vec2& Gas_Particle::GetPosition() const {
@@ -48,6 +53,10 @@ const glm::vec2& Gas_Particle::GetVelocity() const {
 
 float Gas_Particle::GetRadius() const {
   return kRadius;
+}
+
+float Gas_Particle::GetMass() const {
+  return mass_;
 }
 
 void Gas_Particle::IncreaseSpeed() {
