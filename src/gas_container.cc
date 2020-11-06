@@ -17,10 +17,11 @@ Gas_container::Gas_container(const glm::vec2 &top_left_corner, double container_
 
 }
 
-void Gas_container::Generate_particle() {
-  std::cout << "particle is generated!" << std::endl;
-  particles_.emplace_back(top_left_corner_ + glm::vec2(container_size_/2, container_size_/2),
-                          glm::vec2(3, -2));
+void Gas_container::Generate_particle(bool is_red) {
+  if (is_red) {
+    particles_.emplace_back(top_left_corner_ + glm::vec2(container_size_/2, container_size_/2),
+                            glm::vec2(3, -2), 10.0f, "red");
+  }
 }
 
 void Gas_container::Generate_particle(int x_loc, int y_loc, int x_vel, int y_vel) {

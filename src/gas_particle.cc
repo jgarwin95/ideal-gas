@@ -9,14 +9,18 @@ namespace idealgas {
 
 Gas_Particle::Gas_Particle(glm::vec2 &position, glm::vec2 &velocity) : position_(position), velocity_(velocity) {}
 Gas_Particle::Gas_Particle(glm::vec2 position, glm::vec2 velocity) : position_(position), velocity_(velocity) {}
-Gas_Particle::Gas_Particle(glm::vec2 position, glm::vec2 velocity, float mass) : position_(position), velocity_(velocity),
-                            mass_(mass){
-  kRadius = mass_*10;
+Gas_Particle::Gas_Particle(glm::vec2 position, glm::vec2 velocity, float radius, const char* color) : position_(position),
+                            velocity_(velocity), radius_(radius), color_(color){
+  mass_ = 4.0f/3*pi*pow(radius_, 3);
+}
+Gas_Particle::Gas_Particle(glm::vec2 &position, glm::vec2 &velocity, float radius, const char* color) : position_(position),
+                            velocity_(velocity), radius_(radius), color_(color){
+  mass_ = 4.0f/3*pi*pow(radius_, 3);
 }
 
 void Gas_Particle::draw() {
-  ci::gl::color(ci::Color("red"));
-  ci::gl::drawSolidCircle(position_, kRadius);
+  ci::gl::color(ci::Color(color_));
+  ci::gl::drawSolidCircle(position_, radius_);
 }
 
 void Gas_Particle::Move() {
@@ -39,7 +43,7 @@ void Gas_Particle::Handle_collision(glm::vec2 &other_velo, glm::vec2 &other_pos,
   // Elastic collision equation
   glm::vec2 velo_diff = velocity_ - other_velo;
   glm::vec2 pos_diff = position_ - other_pos;
-  float mass_term = mass_*2/(mass_ + other_mass);
+  float mass_term = other_mass*2/(mass_ + other_mass);
   velocity_ = velocity_ - mass_term*(glm::dot(velo_diff, pos_diff)/pow(glm::length(pos_diff), 2) * pos_diff);
 }
 
@@ -52,7 +56,7 @@ const glm::vec2& Gas_Particle::GetVelocity() const {
 }
 
 float Gas_Particle::GetRadius() const {
-  return kRadius;
+  return radius_;
 }
 
 float Gas_Particle::GetMass() const {
@@ -60,7 +64,7 @@ float Gas_Particle::GetMass() const {
 }
 
 void Gas_Particle::IncreaseSpeed() {
-  if (glm::length(velocity_ *= 1.01f) < kRadius/2)
+  if (glm::length(velocity_ *= 1.01f) < radius_/2)
     velocity_ *= 1.01f;
 }
 

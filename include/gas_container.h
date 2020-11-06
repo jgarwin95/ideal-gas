@@ -36,7 +36,7 @@ class Gas_container {
   /**
    * Generates particle at location 25,25 with a velocity vector of 3,-1.5
    */
-  void Generate_particle();
+  void Generate_particle(bool is_red = true);
   /**
    * Generates particle with user define location and velocity
    * @param x_loc x location of center of particle

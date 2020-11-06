@@ -33,6 +33,10 @@ class IdealGasApp : public ci::app::App {
    * Timer variables for limiting the rate of particle generation through user input
    */
   std::chrono::time_point<std::chrono::system_clock> start_timer_, end_timer_;
+  /**
+   * Current setting of particle type
+   */
+  bool is_red_particle_ = true;
 
 };
 

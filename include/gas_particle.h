@@ -18,8 +18,8 @@ class Gas_Particle {
    */
   Gas_Particle(glm::vec2 &position, glm::vec2 &velocity);
   Gas_Particle(glm::vec2 position, glm::vec2 velocity);
-  Gas_Particle(glm::vec2 &position, glm::vec2 &velocity, float mass);
-  Gas_Particle(glm::vec2 position, glm::vec2 velocity, float mass);
+  Gas_Particle(glm::vec2 &position, glm::vec2 &velocity, float radius, const char* color);
+  Gas_Particle(glm::vec2 position, glm::vec2 velocity, float radius, const char* color);
   /**
    * Draw particle to screen
    */
@@ -59,10 +59,13 @@ class Gas_Particle {
   float GetMass() const;
 
  private:
+  const float pi = 3.1415926535897f;
+
   glm::vec2 position_;
   glm::vec2 velocity_;
   float mass_ = 1;
-  float kRadius = 10;
+  float radius_ = 10;
+  const char *color_ = "red";
 };
 
 }

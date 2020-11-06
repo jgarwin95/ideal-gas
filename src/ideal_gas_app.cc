@@ -39,8 +39,11 @@ void IdealGasApp::keyDown(ci::app::KeyEvent event) {
   switch (event.getCode()) {
     case ci::app::KeyEvent::KEY_SPACE: {
       if (!is_timer_enabled_) {
-        std::cout << "particle is generated!" << std::endl;
-        gas_container_.Generate_particle();
+        if (is_red_particle_) {
+          gas_container_.Generate_particle();
+        } else {
+          gas_container_.Generate_particle(false);
+        }
         // start timer
         is_timer_enabled_ = true;
         start_timer_ = std::chrono::system_clock::now();
@@ -60,6 +63,16 @@ void IdealGasApp::keyDown(ci::app::KeyEvent event) {
 
     case ci::app::KeyEvent::KEY_LEFT: {
       gas_container_.DecreaseParticleSpeed();
+      break;
+    }
+
+    case ci::app::KeyEvent::KEY_r: {
+      is_red_particle_ = true;
+      break;
+    }
+
+    case ci::app::KeyEvent::KEY_b: {
+      is_red_particle_ = false;
       break;
     }
 
