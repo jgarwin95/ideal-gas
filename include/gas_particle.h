@@ -16,8 +16,6 @@ class Gas_Particle {
    * @param position 2d vector denoting position
    * @param velocity 2d vector denoting velocity
    */
-  Gas_Particle(glm::vec2 &position, glm::vec2 &velocity);
-  Gas_Particle(glm::vec2 position, glm::vec2 velocity);
   Gas_Particle(glm::vec2 &position, glm::vec2 &velocity, float radius, const char* color);
   Gas_Particle(glm::vec2 position, glm::vec2 velocity, float radius, const char* color);
   /**

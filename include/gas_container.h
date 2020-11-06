@@ -44,7 +44,7 @@ class Gas_container {
    * @param x_vel x component of velocity vector
    * @param y_vel y component of velocity vector
    */
-  void Generate_particle(int x_loc, int y_loc, int x_vel, int y_vel);
+  void Generate_particle(int x_loc, int y_loc, int x_vel, int y_vel, float radius, const char *color);
   /**
    * Get current list of particles in container
    * @return vector of Gas_Particles

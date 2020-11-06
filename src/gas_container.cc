@@ -21,12 +21,15 @@ void Gas_container::Generate_particle(bool is_red) {
   if (is_red) {
     particles_.emplace_back(top_left_corner_ + glm::vec2(container_size_/2, container_size_/2),
                             glm::vec2(3, -2), 10.0f, "red");
+  } else {
+    particles_.emplace_back(top_left_corner_ + glm::vec2(container_size_/2, container_size_/2),
+                            glm::vec2(1.5, -1), 20.0f, "blue");
   }
 }
 
-void Gas_container::Generate_particle(int x_loc, int y_loc, int x_vel, int y_vel) {
+void Gas_container::Generate_particle(int x_loc, int y_loc, int x_vel, int y_vel, float radius, const char* color) {
   particles_.emplace_back(glm::vec2(x_loc, y_loc),
-                          glm::vec2(x_vel, y_vel)); // vector moving in the positive x direction
+                          glm::vec2(x_vel, y_vel), radius, color);
 }
 
 void Gas_container::Draw() const {
