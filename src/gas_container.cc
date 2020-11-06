@@ -140,6 +140,9 @@ void Gas_container::DecreaseParticleSpeed() {
     particle.DecreaseSpeed();
   }
 }
+const cinder::Rectf &Gas_container::GetContainerRect() const {
+  return container_rect_;
+}
 
 }  // namespace container
 

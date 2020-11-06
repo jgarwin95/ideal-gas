@@ -5,9 +5,10 @@ namespace idealgas {
 namespace container {
 
 IdealGasApp::IdealGasApp()
-    : gas_container_(glm::vec2(kMargin, kMargin), kWindowSize - 2 * kMargin) {
+    : gas_container_(glm::vec2(kMarginTop, kMarginSide), kWindowSizeX*(1.0/2)),
+      gas_histogram_one_(glm::vec2(0, kWindowSizeY - kMarginTop)){
 
-  ci::app::setWindowSize((int) kWindowSize, (int) kWindowSize);
+  ci::app::setWindowSize((int) kWindowSizeX, (int) kWindowSizeY);
 }
 
 void IdealGasApp::setup() {
@@ -20,6 +21,7 @@ void IdealGasApp::draw() {
   ci::gl::clear(background_color);
 
   gas_container_.Draw();
+  gas_histogram_one_.Display();
 }
 
 void IdealGasApp::update() {

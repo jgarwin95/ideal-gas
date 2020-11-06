@@ -6,10 +6,7 @@
 #include <math.h>
 
 namespace idealgas {
-/*
-Gas_Particle::Gas_Particle(glm::vec2 &position, glm::vec2 &velocity) : position_(position), velocity_(velocity) {}
-Gas_Particle::Gas_Particle(glm::vec2 position, glm::vec2 velocity) : position_(position), velocity_(velocity) {}
- */
+
 Gas_Particle::Gas_Particle(glm::vec2 position, glm::vec2 velocity, float radius, const char* color) : position_(position),
                             velocity_(velocity), radius_(radius), color_(color){
   mass_ = 2 * radius_;

@@ -62,6 +62,7 @@ class Gas_container {
    * Decrease the speed of all particles
    */
   void DecreaseParticleSpeed();
+  const cinder::Rectf &GetContainerRect() const;
 
  private:
   glm::vec2 top_left_corner_;
