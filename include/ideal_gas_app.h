@@ -32,6 +32,7 @@ class IdealGasApp : public ci::app::App {
   Gas_container gas_container_;
   GasHistogram  gas_histogram_red_;
   GasHistogram  gas_histogram_blue_;
+  GasHistogram  gas_histogram_green_;
 
   bool is_timer_enabled_ = false;
   /**
@@ -41,8 +42,9 @@ class IdealGasApp : public ci::app::App {
   /**
    * Current setting of particle type
    */
-  bool is_red_particle_ = true;
-
+  bool is_red_particle_;
+  bool is_blue_particle_;
+  bool is_green_particle_;
 };
 
 }  // namespace container

@@ -38,7 +38,7 @@ class Gas_container {
   /**
    * Generates particle at location 25,25 with a velocity vector of 3,-1.5
    */
-  void Generate_particle(bool is_red = true);
+  void Generate_particle(std::string&& color);
   /**
    * Generates particle with user define location and velocity
    * @param x_loc x location of center of particle
@@ -67,6 +67,7 @@ class Gas_container {
   const cinder::Rectf &GetContainerRect() const;
   const std::vector<Gas_Particle *> &GetRedParticles() const;
   const std::vector<Gas_Particle *> &GetBlueParticles() const;
+  const std::vector<Gas_Particle *> &GetGreenParticles() const;
 
  private:
   glm::vec2 top_left_corner_;
@@ -77,6 +78,7 @@ class Gas_container {
   std::vector<Gas_Particle*> particles_;
   std::vector<Gas_Particle*> red_particles;
   std::vector<Gas_Particle*> blue_particles;
+  std::vector<Gas_Particle*> green_particles;
   /**
    * Border of the container
    */

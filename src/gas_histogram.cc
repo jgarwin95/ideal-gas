@@ -3,7 +3,6 @@
 //
 
 #include "gas_histogram.h"
-#include <algorithm>
 
 namespace idealgas {
 
@@ -34,7 +33,7 @@ void GasHistogram::Update(const std::vector<idealgas::Gas_Particle*> &particles)
   // Clear existing bin information
   ClearBins();
   // Find the max velocity
-  double max_speed = 0;
+  //double max_speed = 0;
   for (Gas_Particle const *particle : particles) {
     double velo_magnitude = glm::length(particle->GetVelocity());
     if (velo_magnitude > max_speed) {
@@ -57,12 +56,11 @@ void GasHistogram::Update(const std::vector<idealgas::Gas_Particle*> &particles)
     particle_count_++;
   }
 
-  particle_count_ = 20;
-
   for (Bin &bin : bins_) {
-    double height = kWindowSizeY * 0.8 * (bin.count_ / (particle_count_ * 1.0));
+    // scale height of bin to window size
+    double height = kWindowSizeY * (bin.count_ / (particle_count_ * 1.0));
     // reset bin rect to new rect with adjusted height
-    bin.rect_ = ci::Rectf(bin.rect_.getUpperLeft(), bin.rect_.getUpperLeft() + glm::vec2(bin_width_, -height));
+    bin.rect_ = ci::Rectf(glm::vec2(bin.rect_.x1, bin.rect_.y1), glm::vec2(bin.rect_.x1, bin.rect_.y1) + glm::vec2(bin_width_, -height));
   }
 }
 

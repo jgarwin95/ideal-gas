@@ -23,18 +23,25 @@ Gas_container::~Gas_container() {
   }
 }
 
-void Gas_container::Generate_particle(bool is_red) {
-  if (is_red) {
+void Gas_container::Generate_particle(std::string&& color) {
+  if (color == "red") {
     Gas_Particle *red_temp  = new Gas_Particle(top_left_corner_ + glm::vec2(container_size_/2, container_size_/2),
                       glm::vec2(3, -2), 10.0f, "red");
     particles_.push_back(red_temp);
     red_particles.push_back(red_temp);
 
-  } else {
+  } else if (color == "blue") {
     Gas_Particle *blue_temp  = new Gas_Particle(top_left_corner_ + glm::vec2(container_size_/2, container_size_/2),
                                                glm::vec2(1.5, -1), 20.0f, "blue");
     particles_.push_back(blue_temp);
     blue_particles.push_back(blue_temp);
+  }
+
+  else if (color == "green") {
+    Gas_Particle *green_temp  = new Gas_Particle(top_left_corner_ + glm::vec2(container_size_/2, container_size_/2),
+                                                glm::vec2(5, -2.5), 5.0f, "green");
+    particles_.push_back(green_temp);
+    green_particles.push_back(green_temp);
   }
 }
 
@@ -142,6 +149,10 @@ const std::vector<Gas_Particle *> &Gas_container::GetRedParticles() const {
 
 const std::vector<Gas_Particle *> &Gas_container::GetBlueParticles() const {
   return blue_particles;
+}
+
+const std::vector<Gas_Particle *> &Gas_container::GetGreenParticles() const {
+  return green_particles;
 }
 
 void Gas_container::Clear() {

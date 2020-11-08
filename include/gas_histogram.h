@@ -9,7 +9,11 @@
 
 namespace idealgas {
 
+// shared max speed amongst histograms. Allows for shared x-axis scaling
+static double max_speed = 0;
+
 class GasHistogram {
+
  public:
   // Constructors
   GasHistogram(const glm::vec2 &bottom_left_corner, const char *color);
