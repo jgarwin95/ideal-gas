@@ -30,7 +30,8 @@ class IdealGasApp : public ci::app::App {
 
  private:
   Gas_container gas_container_;
-  GasHistogram  gas_histogram_one_;
+  GasHistogram  gas_histogram_red_;
+  GasHistogram  gas_histogram_blue_;
 
   bool is_timer_enabled_ = false;
   /**

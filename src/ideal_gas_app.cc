@@ -6,7 +6,8 @@ namespace container {
 
 IdealGasApp::IdealGasApp()
     : gas_container_(glm::vec2(kMarginTop, kMarginSide), kWindowSizeX*(1.0/2)),
-      gas_histogram_one_(glm::vec2(0, kWindowSizeY - kMarginTop)){
+      gas_histogram_red_(glm::vec2(0, kWindowSizeY - kMarginTop), "red"),
+      gas_histogram_blue_(gas_histogram_red_.GetBorder().getUpperRight(), "blue"){
 
   ci::app::setWindowSize((int) kWindowSizeX, (int) kWindowSizeY);
 }
@@ -21,11 +22,15 @@ void IdealGasApp::draw() {
   ci::gl::clear(background_color);
 
   gas_container_.Draw();
-  gas_histogram_one_.Display();
+  gas_histogram_red_.Display();
+  gas_histogram_blue_.Display();
 }
 
 void IdealGasApp::update() {
   gas_container_.Update();
+  if (!gas_container_.Get_particles().empty()) {
+    gas_histogram_red_.Update(gas_container_.Get_particles());
+  }
 
   // keep refreshing end timer with each loop
   end_timer_ = std::chrono::system_clock::now();

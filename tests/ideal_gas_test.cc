@@ -4,6 +4,7 @@
 
 #include <catch2/catch.hpp>
 #include "gas_container.h"
+#include "gas_histogram.h"
 
 namespace idealgas {
 namespace container {
@@ -347,9 +348,14 @@ TEST_CASE("Inter-particle collisions", "[particle][collision]") {
     REQUIRE(container.Get_particles().at(1).GetVelocity().x == Approx(3));
     REQUIRE(container.Get_particles().at(1).GetVelocity().y == Approx(0));
   }
+}
 
-
-
+TEST_CASE("Histogram generation", "[histogram]") {
+  Gas_container container(glm::vec2(0, 0), 50);
+  GasHistogram hist(glm::vec2(0, 0));
+  container.Generate_particle(15, 25, 3, 0, 10.0f, "red");
+  hist.Update(container.Get_particles());
+  hist.Display();
 
 }
 
