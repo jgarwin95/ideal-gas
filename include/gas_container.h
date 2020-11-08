@@ -23,6 +23,8 @@ class Gas_container {
    *                            screen pixels
    */
   Gas_container(const glm::vec2& top_left_corner, double container_size);
+  // Desctructor
+  ~Gas_container();
 
   /**
    * Draws the border of the container along with all particles
@@ -49,7 +51,7 @@ class Gas_container {
    * Get current list of particles in container
    * @return vector of Gas_Particles
    */
-  const std::vector<Gas_Particle>& Get_particles() const;
+  const std::vector<Gas_Particle*>& Get_particles() const;
   /**
    * Clear vector of particles
    */
@@ -63,6 +65,8 @@ class Gas_container {
    */
   void DecreaseParticleSpeed();
   const cinder::Rectf &GetContainerRect() const;
+  const std::vector<Gas_Particle *> &GetRedParticles() const;
+  const std::vector<Gas_Particle *> &GetBlueParticles() const;
 
  private:
   glm::vec2 top_left_corner_;
@@ -70,7 +74,9 @@ class Gas_container {
   /**
    * Vector of current particles
    */
-  std::vector<Gas_Particle> particles_;
+  std::vector<Gas_Particle*> particles_;
+  std::vector<Gas_Particle*> red_particles;
+  std::vector<Gas_Particle*> blue_particles;
   /**
    * Border of the container
    */
@@ -82,7 +88,7 @@ class Gas_container {
    * @param particle_2 second particle being compared
    * @return boolean value denoting if the particles have collided
    */
-  bool Check_collision(const Gas_Particle &particle_1, const Gas_Particle &particle_2);
+  bool Check_collision(const Gas_Particle* particle_1, const Gas_Particle* particle_2);
   /**
    * Check if two particles were traveling in the opposite direction. This is a valid collision requirement and
    * will reduce particle sticking
@@ -90,7 +96,7 @@ class Gas_container {
    * @param particle_2 second particle being compared
    * @return boolean value if the particles were traveling in opposite directions
    */
-  bool CheckOppositeDirection(const Gas_Particle &particle_1, const Gas_Particle &particle_2) const;
+  bool CheckOppositeDirection(const Gas_Particle* particle_1, const Gas_Particle* particle_2) const;
   /**
    * Check if a particle and wall were traveling in the opposite direction. This is a valid collision requirement and
    * will reduce particles sticking to walls
@@ -98,13 +104,13 @@ class Gas_container {
    * @param direction rvalue std::string flag denoting "right", "left", "top", or "bottom" for the wall to be compared against
    * @return boolean value if the particle and wall were "traveling" in opposite directions
    */
-  bool CheckOppositeDirection(const Gas_Particle &particle, std::string&& direction) const;
+  bool CheckOppositeDirection(const Gas_Particle* particle, std::string&& direction) const;
   /**
    * Alter the velocity/direction vector for colliding particles
    * @param particle_1 first particle in collision
    * @param particle_2 second particle in collision
    */
-  void HandleCollision(Gas_Particle &particle_1, Gas_Particle &particle_2);
+  void HandleCollision(Gas_Particle* particle_1, Gas_Particle* particle_2);
 };
 
 }  // namespace container

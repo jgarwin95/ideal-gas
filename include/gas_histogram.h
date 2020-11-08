@@ -16,7 +16,7 @@ class GasHistogram {
 
   // Methods
   void Display();
-  void Update(const std::vector<idealgas::Gas_Particle> &particles);
+  void Update(const std::vector<idealgas::Gas_Particle*> &particles);
 
   // Getters & Setters
   const cinder::Rectf &GetBorder() const;

@@ -28,8 +28,11 @@ void IdealGasApp::draw() {
 
 void IdealGasApp::update() {
   gas_container_.Update();
-  if (!gas_container_.Get_particles().empty()) {
-    gas_histogram_red_.Update(gas_container_.Get_particles());
+  if (!gas_container_.GetRedParticles().empty()) {
+    gas_histogram_red_.Update(gas_container_.GetRedParticles());
+  }
+  if (!gas_container_.GetBlueParticles().empty()) {
+    gas_histogram_blue_.Update(gas_container_.GetBlueParticles());
   }
 
   // keep refreshing end timer with each loop

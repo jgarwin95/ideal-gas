@@ -30,14 +30,13 @@ void GasHistogram::Display() {
   ci::gl::drawStrokedRect(border_);
 }
 
-void GasHistogram::Update(const std::vector<idealgas::Gas_Particle> &particles) {
+void GasHistogram::Update(const std::vector<idealgas::Gas_Particle*> &particles) {
   // Clear existing bin information
   ClearBins();
   // Find the max velocity
   double max_speed = 0;
-  // TODO:: iterating through here just to get the max velocity. Is there a better method with sorting?
-  for (Gas_Particle const &particle : particles) {
-    double velo_magnitude = glm::length(particle.GetVelocity());
+  for (Gas_Particle const *particle : particles) {
+    double velo_magnitude = glm::length(particle->GetVelocity());
     if (velo_magnitude > max_speed) {
       max_speed = velo_magnitude;
     }
@@ -45,11 +44,13 @@ void GasHistogram::Update(const std::vector<idealgas::Gas_Particle> &particles) 
   double bin_width = max_speed/kBinCount;
 
   // Place into appropriate bin
-  for (Gas_Particle const &particle : particles) {
+  for (Gas_Particle const *particle : particles) {
     for (int i = 0; i < kBinCount; i++) {
-      if ((glm::length(particle.GetVelocity()) >= i * bin_width) && (glm::length(particle.GetVelocity()) <= bin_width * (i + 1))) {
+      if ((glm::length(particle->GetVelocity()) >= i * bin_width) && (glm::length(particle->GetVelocity()) <= bin_width * (i + 1))) {
         // increment bin count
         bins_.at(i).count_++;
+        // particle has been added break out of loop
+        break;
       }
     }
     // increment total count
@@ -62,7 +63,6 @@ void GasHistogram::Update(const std::vector<idealgas::Gas_Particle> &particles) 
     double height = kWindowSizeY * 0.8 * (bin.count_ / (particle_count_ * 1.0));
     // reset bin rect to new rect with adjusted height
     bin.rect_ = ci::Rectf(bin.rect_.getUpperLeft(), bin.rect_.getUpperLeft() + glm::vec2(bin_width_, -height));
-    //bin.rect_ = ci::Rectf(bin.rect_.getLowerLeft(), bin.rect_.getLowerLeft() + glm::vec2(bin_width_, height));
   }
 }
 

@@ -14,22 +14,33 @@ Gas_container::Gas_container(const glm::vec2 &top_left_corner, double container_
 
   container_rect_ = ci::Rectf(top_left_corner_, bottom_right);
   // place single particle in the middle of the container
+}
 
+Gas_container::~Gas_container() {
+  for (Gas_Particle *particle : particles_) {
+    delete particle;
+    particle = nullptr;
+  }
 }
 
 void Gas_container::Generate_particle(bool is_red) {
   if (is_red) {
-    particles_.emplace_back(top_left_corner_ + glm::vec2(container_size_/2, container_size_/2),
-                            glm::vec2(3, -2), 10.0f, "red");
+    Gas_Particle *red_temp  = new Gas_Particle(top_left_corner_ + glm::vec2(container_size_/2, container_size_/2),
+                      glm::vec2(3, -2), 10.0f, "red");
+    particles_.push_back(red_temp);
+    red_particles.push_back(red_temp);
+
   } else {
-    particles_.emplace_back(top_left_corner_ + glm::vec2(container_size_/2, container_size_/2),
-                            glm::vec2(1.5, -1), 20.0f, "blue");
+    Gas_Particle *blue_temp  = new Gas_Particle(top_left_corner_ + glm::vec2(container_size_/2, container_size_/2),
+                                               glm::vec2(1.5, -1), 20.0f, "blue");
+    particles_.push_back(blue_temp);
+    blue_particles.push_back(blue_temp);
   }
 }
 
 void Gas_container::Generate_particle(int x_loc, int y_loc, int x_vel, int y_vel, float radius, const char* color) {
-  particles_.emplace_back(glm::vec2(x_loc, y_loc),
-                          glm::vec2(x_vel, y_vel), radius, color);
+  Gas_Particle *temp  = new Gas_Particle(glm::vec2(x_loc, y_loc), glm::vec2(x_vel, y_vel), radius, color);
+  particles_.push_back(temp);
 }
 
 void Gas_container::Draw() const {
@@ -38,38 +49,38 @@ void Gas_container::Draw() const {
   ci::gl::drawStrokedRect(container_rect_);
 
   // draw each particle
-  for (Gas_Particle particle : particles_) {
-    particle.draw();
+  for (Gas_Particle* particle : particles_) {
+    particle->draw();
   }
 }
 
 void Gas_container::Update()  {
-  for (Gas_Particle& particle : particles_) {
+  for (Gas_Particle* particle : particles_) {
     // Move each particle to it's final position for this frame
-    particle.Move();
+    particle->Move();
   }
 
   int particle_counter = 0;
   // Handle any collisions associated with those final positions
-  for (Gas_Particle& particle : particles_) {
+  for (Gas_Particle* particle : particles_) {
 
-    float radius = particle.GetRadius();
-
+    //float radius = particle.GetRadius();
+    float radius = particle->GetRadius();
     // check if the particle is touching a left/right wall
-    if (((particle.GetPosition().x  - radius <= container_rect_.x1) && CheckOppositeDirection(particle, "left")) ||
-    ((particle.GetPosition().x  + radius >= container_rect_.x2) && CheckOppositeDirection(particle, "right"))) {
+    if (((particle->GetPosition().x  - radius <= container_rect_.x1) && CheckOppositeDirection(particle, "left")) ||
+        ((particle->GetPosition().x  + radius >= container_rect_.x2) && CheckOppositeDirection(particle, "right"))) {
       // Flip x direction
-      particle.ReverseXDirection();
+      particle->ReverseXDirection();
     }
     // check if the particle is touching a top/bottom wall
-    if (((particle.GetPosition().y  + radius >= container_rect_.y2) && CheckOppositeDirection(particle, "bottom")) ||
-        ((particle.GetPosition().y  - radius <= container_rect_.y1) && CheckOppositeDirection(particle, "top"))) {
+    if (((particle->GetPosition().y  + radius >= container_rect_.y2) && CheckOppositeDirection(particle, "bottom")) ||
+        ((particle->GetPosition().y  - radius <= container_rect_.y1) && CheckOppositeDirection(particle, "top"))) {
       // Flip y direction
-      particle.ReverseYDirection();
+      particle->ReverseYDirection();
     }
 
     for (size_t i = particle_counter + 1; i < particles_.size(); i++) {
-      Gas_Particle &other = particles_.at(i);
+      Gas_Particle* other = particles_.at(i);
       // If they are touching and were heading in the same direction handle collision
       if (Check_collision(particle, other) && CheckOppositeDirection(particle, other)) {
         HandleCollision(particle, other);
@@ -80,49 +91,57 @@ void Gas_container::Update()  {
   }
 }
 
-void Gas_container::HandleCollision(Gas_Particle &particle_1, Gas_Particle &particle_2) {
+void Gas_container::HandleCollision(Gas_Particle* particle_1, Gas_Particle* particle_2) {
   // Save initial state of particles
-  glm::vec2 vi_1 = particle_1.GetVelocity();
-  glm::vec2 vi_2 = particle_2.GetVelocity();
-  glm::vec2 xi_1 = particle_1.GetPosition();
-  glm::vec2 xi_2 = particle_2.GetPosition();
-  float m1 = particle_1.GetMass();
-  float m2 = particle_2.GetMass();
+  glm::vec2 vi_1 = particle_1->GetVelocity();
+  glm::vec2 vi_2 = particle_2->GetVelocity();
+  glm::vec2 xi_1 = particle_1->GetPosition();
+  glm::vec2 xi_2 = particle_2->GetPosition();
+  float m1 = particle_1->GetMass();
+  float m2 = particle_2->GetMass();
   // Alter velocities based on previously saved state
-  particle_1.Handle_collision(vi_2, xi_2, m2);
-  particle_2.Handle_collision(vi_1, xi_1, m1);
+  particle_1->Handle_collision(vi_2, xi_2, m2);
+  particle_2->Handle_collision(vi_1, xi_1, m1);
 }
 
-bool Gas_container::Check_collision(const Gas_Particle &particle_1, const Gas_Particle &particle_2) {
-  glm::vec2 pos1 = particle_1.GetPosition();
-  glm::vec2 pos2 = particle_2.GetPosition();
+bool Gas_container::Check_collision(const Gas_Particle* particle_1, const Gas_Particle* particle_2) {
+  glm::vec2 pos1 = particle_1->GetPosition();
+  glm::vec2 pos2 = particle_2->GetPosition();
   // return if the sum of the radii is less than the distance between the centers of the two particles
-  return (particle_1.GetRadius() + particle_2.GetRadius() >= glm::distance(particle_1.GetPosition(), particle_2.GetPosition()));
+  return (particle_1->GetRadius() + particle_2->GetRadius() >= glm::distance(particle_1->GetPosition(), particle_2->GetPosition()));
 }
 
-bool Gas_container::CheckOppositeDirection(const Gas_Particle &particle_1, const Gas_Particle &particle_2) const {
-  float result = glm::dot(particle_1.GetVelocity() - particle_2.GetVelocity(), particle_1.GetPosition() - particle_2.GetPosition());
+bool Gas_container::CheckOppositeDirection(const Gas_Particle* particle_1, const Gas_Particle* particle_2) const {
+  float result = glm::dot(particle_1->GetVelocity() - particle_2->GetVelocity(), particle_1->GetPosition() - particle_2->GetPosition());
   return (result < 0);
 }
 
-bool Gas_container::CheckOppositeDirection(const Gas_Particle &particle, std::string&& direction) const {
+bool Gas_container::CheckOppositeDirection(const Gas_Particle* particle, std::string&& direction) const {
   glm::vec2 wall_position;
   if (direction == "left")
-    wall_position = glm::vec2(container_rect_.getX1(), particle.GetPosition().y);
+    wall_position = glm::vec2(container_rect_.getX1(), particle->GetPosition().y);
   else if (direction == "right")
-    wall_position = glm::vec2(container_rect_.getX2(), particle.GetPosition().y);
+    wall_position = glm::vec2(container_rect_.getX2(), particle->GetPosition().y);
   else if (direction == "top")
-    wall_position = glm::vec2(particle.GetPosition().x, container_rect_.getY1());
+    wall_position = glm::vec2(particle->GetPosition().x, container_rect_.getY1());
   else if (direction == "bottom")
-    wall_position = glm::vec2(particle.GetPosition().x, container_rect_.getY2());
+    wall_position = glm::vec2(particle->GetPosition().x, container_rect_.getY2());
 
-  float result = glm::dot(particle.GetVelocity(), particle.GetPosition() - wall_position);
+  float result = glm::dot(particle->GetVelocity(), particle->GetPosition() - wall_position);
 
   return result < 0;
 }
 
-const std::vector<Gas_Particle>& Gas_container::Get_particles() const {
+const std::vector<Gas_Particle*>& Gas_container::Get_particles() const {
   return particles_;
+}
+
+const std::vector<Gas_Particle *> &Gas_container::GetRedParticles() const {
+  return red_particles;
+}
+
+const std::vector<Gas_Particle *> &Gas_container::GetBlueParticles() const {
+  return blue_particles;
 }
 
 void Gas_container::Clear() {
@@ -130,14 +149,14 @@ void Gas_container::Clear() {
 }
 
 void Gas_container::IncreaseParticleSpeed() {
-  for (Gas_Particle &particle : particles_) {
-    particle.IncreaseSpeed();
+  for (Gas_Particle* particle : particles_) {
+    particle->IncreaseSpeed();
   }
 }
 
 void Gas_container::DecreaseParticleSpeed() {
-  for (Gas_Particle &particle : particles_) {
-    particle.DecreaseSpeed();
+  for (Gas_Particle* particle : particles_) {
+    particle->DecreaseSpeed();
   }
 }
 const cinder::Rectf &Gas_container::GetContainerRect() const {
