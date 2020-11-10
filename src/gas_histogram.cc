@@ -12,6 +12,8 @@ GasHistogram::GasHistogram(const glm::vec2 &bottom_left_corner, const char *colo
   glm::vec2 padded_left = bottom_left_corner + glm::vec2(kMargin, 0);
   glm::vec2 upper_right = padded_left + glm::vec2(kWindowSizeX, -kWindowSizeY);
 
+  text_font_ = ci::Font("Times New Roman", 30.0f);
+
   border_ = ci::Rectf(padded_left, upper_right);
 
   bin_width_ = kWindowSizeX / kBinCount;
@@ -23,8 +25,14 @@ GasHistogram::GasHistogram(const glm::vec2 &bottom_left_corner, const char *colo
 }
 
 void GasHistogram::Display() {
-  ci::Font text("Times New Roman", 30.0f);
-  ci::gl::drawStringCentered("Count", bottom_left_ + glm::vec2(kMargin + kWindowSizeX/2, 0), ci::Color("white"), text);
+  // Y-axis label
+  ci::gl::pushModelMatrix();
+  ci::gl::translate(bottom_left_ + glm::vec2(kMargin/2, -kWindowSizeY/2));
+  ci::gl::rotate(-3.14159f/2);
+  ci::gl::drawStringCentered("Count", glm::vec2(0,0), ci::Color("white"), text_font_);
+  ci::gl::popModelMatrix();
+  // X-axis label
+  ci::gl::drawStringCentered("Speed", bottom_left_ + glm::vec2(kMargin + kWindowSizeX/2, 0), ci::Color("white"), text_font_);
 
 
   for (Bin &bin : bins_) {

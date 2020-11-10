@@ -3,6 +3,7 @@
 //
 #include "cinder/gl/gl.h"
 #include "gas_particle.h"
+#include "cinder/Font.h"
 
 #ifndef IDEAL_GAS_INCLUDE_GAS_HISTOGRAM_H_
 #define IDEAL_GAS_INCLUDE_GAS_HISTOGRAM_H_
@@ -40,6 +41,7 @@ class GasHistogram {
   std::vector<Bin> bins_;
   ci::Rectf border_;
   int particle_count_ = 0;
+  ci::Font text_font_;
 
   void ClearBins();
 };
