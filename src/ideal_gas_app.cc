@@ -9,7 +9,8 @@ IdealGasApp::IdealGasApp()
       gas_histogram_red_(glm::vec2(0, kWindowSizeY - kMarginTop), "red"),
       gas_histogram_blue_(gas_histogram_red_.GetBorder().getUpperRight(), "blue"),
       gas_histogram_green_(gas_histogram_blue_.GetBorder().getUpperRight(), "green"),
-      is_red_particle_(true), is_blue_particle_(false), is_green_particle_(false){
+      is_red_particle_(true), is_blue_particle_(false), is_green_particle_(false), current_color_("red"),
+      color_display_(glm::vec2(kWindowSizeX * 1/2.0 + kMarginSide + kMarginSide, kMarginTop)){
 
   ci::app::setWindowSize((int) kWindowSizeX, (int) kWindowSizeY);
 }
@@ -24,6 +25,7 @@ void IdealGasApp::draw() {
   ci::gl::clear(background_color);
 
   gas_container_.Draw();
+  color_display_.Draw();
   gas_histogram_red_.Display();
   gas_histogram_blue_.Display();
   gas_histogram_green_.Display();
@@ -32,6 +34,7 @@ void IdealGasApp::draw() {
 void IdealGasApp::update() {
   // Update gas container
   gas_container_.Update();
+  color_display_.Update(current_color_.c_str());
   // Ascertain max velocity
   double max_speed = gas_container_.GetMaxSpeed();
 
@@ -60,11 +63,11 @@ void IdealGasApp::keyDown(ci::app::KeyEvent event) {
     case ci::app::KeyEvent::KEY_SPACE: {
       if (!is_timer_enabled_) {
         if (is_red_particle_) {
-          gas_container_.Generate_particle("red");
+          gas_container_.Generate_particle(current_color_);
         } else if (is_blue_particle_) {
-          gas_container_.Generate_particle("blue");
+          gas_container_.Generate_particle(current_color_);
         } else if (is_green_particle_) {
-          gas_container_.Generate_particle("green");
+          gas_container_.Generate_particle(current_color_);
         }
         // start timer
         is_timer_enabled_ = true;
@@ -92,6 +95,7 @@ void IdealGasApp::keyDown(ci::app::KeyEvent event) {
       is_red_particle_ = true;
       is_blue_particle_ = false;
       is_green_particle_ = false;
+      current_color_ = "red";
       break;
     }
 
@@ -99,6 +103,7 @@ void IdealGasApp::keyDown(ci::app::KeyEvent event) {
       is_blue_particle_ = true;
       is_red_particle_ = false;
       is_green_particle_ = false;
+      current_color_ = "blue";
       break;
     }
 
@@ -106,6 +111,7 @@ void IdealGasApp::keyDown(ci::app::KeyEvent event) {
       is_green_particle_ = true;
       is_red_particle_ = false;
       is_blue_particle_ = false;
+      current_color_ = "green";
       break;
     }
 

@@ -57,13 +57,11 @@ class Gas_Particle {
   float GetMass() const;
 
  private:
-  const float pi = 3.1415926535897f;
-
   glm::vec2 position_;
   glm::vec2 velocity_;
   float mass_ = 1;
   float radius_ = 10;
-  const char *color_ = "red";
+  const char *color_;
 };
 
 }

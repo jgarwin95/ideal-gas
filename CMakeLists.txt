@@ -57,6 +57,7 @@ list(APPEND SOURCE_FILES    ${CORE_SOURCE_FILES}
         src/gas_container.cc
         src/gas_particle.cc
         src/gas_histogram.cc
+        src/color_display.cc
         )
 
 list(APPEND TEST_FILES tests/ideal_gas_test.cc# add test files here i.e. "tests/test_classifier.cc"

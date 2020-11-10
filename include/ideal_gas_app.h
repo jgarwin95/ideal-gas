@@ -5,6 +5,7 @@
 #include "cinder/gl/gl.h"
 #include "gas_container.h"
 #include "gas_histogram.h"
+#include "color_display.h"
 
 namespace idealgas {
 
@@ -22,13 +23,13 @@ class IdealGasApp : public ci::app::App {
   void setup() override;
   void keyDown(ci::app::KeyEvent event) override;
 
-
   const double kWindowSizeX = 1100;
   const double kWindowSizeY = 950;
   const double kMarginSide = 50;
   const double kMarginTop = 50;
 
  private:
+  ColorDisplay color_display_;
   Gas_container gas_container_;
   GasHistogram  gas_histogram_red_;
   GasHistogram  gas_histogram_blue_;
@@ -45,6 +46,7 @@ class IdealGasApp : public ci::app::App {
   bool is_red_particle_;
   bool is_blue_particle_;
   bool is_green_particle_;
+  std::string current_color_;
 };
 
 }  // namespace container

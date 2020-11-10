@@ -23,7 +23,7 @@ Gas_container::~Gas_container() {
   }
 }
 
-void Gas_container::Generate_particle(std::string&& color) {
+void Gas_container::Generate_particle(std::string& color) {
   if (color == "red") {
     Gas_Particle *red_temp  = new Gas_Particle(top_left_corner_ + glm::vec2(container_size_/2, container_size_/2),
                       glm::vec2(4, -2), 10.0f, "red");

@@ -24,7 +24,8 @@ GasHistogram::GasHistogram(const glm::vec2 &bottom_left_corner, const char *colo
 
 void GasHistogram::Display() {
   ci::Font text("Times New Roman", 30.0f);
-  ci::gl::drawStringCentered("Speed", bottom_left_ + glm::vec2(kMargin + kWindowSizeX/2, 0), ci::Color("white"), text);
+  ci::gl::drawStringCentered("Count", bottom_left_ + glm::vec2(kMargin + kWindowSizeX/2, 0), ci::Color("white"), text);
+
 
   for (Bin &bin : bins_) {
     ci::gl::color(ci::Color(color_));
