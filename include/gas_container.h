@@ -69,6 +69,7 @@ class Gas_container {
   const std::vector<Gas_Particle *> &GetBlueParticles() const;
   const std::vector<Gas_Particle *> &GetGreenParticles() const;
 
+  double GetMaxSpeed();
  private:
   glm::vec2 top_left_corner_;
   double container_size_;
@@ -113,6 +114,8 @@ class Gas_container {
    * @param particle_2 second particle in collision
    */
   void HandleCollision(Gas_Particle* particle_1, Gas_Particle* particle_2);
+
+  double max_speed_;
 };
 
 }  // namespace container

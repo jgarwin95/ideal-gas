@@ -26,20 +26,20 @@ Gas_container::~Gas_container() {
 void Gas_container::Generate_particle(std::string&& color) {
   if (color == "red") {
     Gas_Particle *red_temp  = new Gas_Particle(top_left_corner_ + glm::vec2(container_size_/2, container_size_/2),
-                      glm::vec2(3, -2), 10.0f, "red");
+                      glm::vec2(4, -2), 10.0f, "red");
     particles_.push_back(red_temp);
     red_particles.push_back(red_temp);
 
   } else if (color == "blue") {
     Gas_Particle *blue_temp  = new Gas_Particle(top_left_corner_ + glm::vec2(container_size_/2, container_size_/2),
-                                               glm::vec2(1.5, -1), 20.0f, "blue");
+                                               glm::vec2(3, -2), 18.0f, "blue");
     particles_.push_back(blue_temp);
     blue_particles.push_back(blue_temp);
   }
 
   else if (color == "green") {
     Gas_Particle *green_temp  = new Gas_Particle(top_left_corner_ + glm::vec2(container_size_/2, container_size_/2),
-                                                glm::vec2(5, -2.5), 5.0f, "green");
+                                                glm::vec2(2, -1.8), 27.0f, "green");
     particles_.push_back(green_temp);
     green_particles.push_back(green_temp);
   }
@@ -62,6 +62,9 @@ void Gas_container::Draw() const {
 }
 
 void Gas_container::Update()  {
+  // Reset max speed
+  max_speed_ = 0;
+
   for (Gas_Particle* particle : particles_) {
     // Move each particle to it's final position for this frame
     particle->Move();
@@ -95,6 +98,10 @@ void Gas_container::Update()  {
     }
     // Increment current particle number
     particle_counter++;
+
+    if (glm::length(particle->GetVelocity()) > max_speed_) {
+      max_speed_ = glm::length(particle->GetVelocity());
+    }
   }
 }
 
@@ -172,6 +179,10 @@ void Gas_container::DecreaseParticleSpeed() {
 }
 const cinder::Rectf &Gas_container::GetContainerRect() const {
   return container_rect_;
+}
+
+double Gas_container::GetMaxSpeed() {
+  return max_speed_;
 }
 
 }  // namespace container

@@ -9,9 +9,6 @@
 
 namespace idealgas {
 
-// shared max speed amongst histograms. Allows for shared x-axis scaling
-static double max_speed = 0;
-
 class GasHistogram {
 
  public:
@@ -20,7 +17,7 @@ class GasHistogram {
 
   // Methods
   void Display();
-  void Update(const std::vector<idealgas::Gas_Particle*> &particles);
+  void Update(const std::vector<idealgas::Gas_Particle*> &particles, double max_speed);
 
   // Getters & Setters
   const cinder::Rectf &GetBorder() const;
@@ -30,8 +27,6 @@ class GasHistogram {
     Bin(const glm::vec2 &bottom_left_corner, double width);
     int count_ = 0;
     ci::Rectf rect_;
-    int x_loc_;
-    int y_loc_;
   };
 
  private:
@@ -40,6 +35,7 @@ class GasHistogram {
   const double kWindowSizeY = 240;
   const double kMargin = 50;
   const int kBinCount = 20;
+  const glm::vec2 bottom_left_;
   double bin_width_;
   std::vector<Bin> bins_;
   ci::Rectf border_;

@@ -3,10 +3,12 @@
 //
 
 #include "gas_histogram.h"
+#include "cinder/Font.h"
 
 namespace idealgas {
 
-GasHistogram::GasHistogram(const glm::vec2 &bottom_left_corner, const char *color) : color_(color){
+GasHistogram::GasHistogram(const glm::vec2 &bottom_left_corner, const char *color) : color_(color),
+                          bottom_left_(bottom_left_corner){
   glm::vec2 padded_left = bottom_left_corner + glm::vec2(kMargin, 0);
   glm::vec2 upper_right = padded_left + glm::vec2(kWindowSizeX, -kWindowSizeY);
 
@@ -21,6 +23,9 @@ GasHistogram::GasHistogram(const glm::vec2 &bottom_left_corner, const char *colo
 }
 
 void GasHistogram::Display() {
+  ci::Font text("Times New Roman", 30.0f);
+  ci::gl::drawStringCentered("Speed", bottom_left_ + glm::vec2(kMargin + kWindowSizeX/2, 0), ci::Color("white"), text);
+
   for (Bin &bin : bins_) {
     ci::gl::color(ci::Color(color_));
     ci::gl::drawStrokedRect(bin.rect_);
@@ -29,17 +34,10 @@ void GasHistogram::Display() {
   ci::gl::drawStrokedRect(border_);
 }
 
-void GasHistogram::Update(const std::vector<idealgas::Gas_Particle*> &particles) {
+void GasHistogram::Update(const std::vector<idealgas::Gas_Particle*> &particles, double max_speed) {
   // Clear existing bin information
   ClearBins();
-  // Find the max velocity
-  //double max_speed = 0;
-  for (Gas_Particle const *particle : particles) {
-    double velo_magnitude = glm::length(particle->GetVelocity());
-    if (velo_magnitude > max_speed) {
-      max_speed = velo_magnitude;
-    }
-  }
+
   double bin_width = max_speed/kBinCount;
 
   // Place into appropriate bin

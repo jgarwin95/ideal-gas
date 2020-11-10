@@ -30,15 +30,19 @@ void IdealGasApp::draw() {
 }
 
 void IdealGasApp::update() {
+  // Update gas container
   gas_container_.Update();
+  // Ascertain max velocity
+  double max_speed = gas_container_.GetMaxSpeed();
+
   if (!gas_container_.GetRedParticles().empty()) {
-    gas_histogram_red_.Update(gas_container_.GetRedParticles());
+    gas_histogram_red_.Update(gas_container_.GetRedParticles(), max_speed);
   }
   if (!gas_container_.GetBlueParticles().empty()) {
-    gas_histogram_blue_.Update(gas_container_.GetBlueParticles());
+    gas_histogram_blue_.Update(gas_container_.GetBlueParticles(), max_speed);
   }
   if (!gas_container_.GetGreenParticles().empty()) {
-    gas_histogram_green_.Update(gas_container_.GetGreenParticles());
+    gas_histogram_green_.Update(gas_container_.GetGreenParticles(), max_speed);
   }
 
   // keep refreshing end timer with each loop
