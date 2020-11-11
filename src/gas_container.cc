@@ -76,6 +76,7 @@ void Gas_container::Update()  {
 
     //float radius = particle.GetRadius();
     float radius = particle->GetRadius();
+
     // check if the particle is touching a left/right wall
     if (((particle->GetPosition().x  - radius <= container_rect_.x1) && CheckOppositeDirection(particle, "left")) ||
         ((particle->GetPosition().x  + radius >= container_rect_.x2) && CheckOppositeDirection(particle, "right"))) {
