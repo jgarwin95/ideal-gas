@@ -144,7 +144,15 @@ bool Gas_container::CheckOppositeDirection(const Gas_Particle* particle, std::st
 
   float result = glm::dot(particle->GetVelocity(), particle->GetPosition() - wall_position);
 
-  return result < 0;
+  // If particle is outside the confines of the box the rules for direction switching are reverse
+  // Only switch if the particle is heading away from the boundary, if it is heading towards to not switch
+  if (IsOutsideBox(particle) && (result > 0)) {
+    return true;
+  } else if (IsOutsideBox(particle) && (result < 0)) {
+    return false;
+  } else {
+    return result < 0;
+  }
 }
 
 const std::vector<Gas_Particle*>& Gas_container::Get_particles() const {
@@ -184,6 +192,16 @@ const cinder::Rectf &Gas_container::GetContainerRect() const {
 
 double Gas_container::GetMaxSpeed() {
   return max_speed_;
+}
+
+bool Gas_container::IsOutsideBox(const Gas_Particle *p_particle) const {
+  if ((p_particle->GetPosition().x > container_rect_.x2) || (p_particle->GetPosition().x < container_rect_.x1)) {
+    return true;
+  }
+  if ((p_particle->GetPosition().y > container_rect_.y2) || (p_particle->GetPosition().y < container_rect_.y1)) {
+    return true;
+  }
+  return false;
 }
 
 }  // namespace container

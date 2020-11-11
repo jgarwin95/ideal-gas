@@ -116,6 +116,7 @@ class Gas_container {
   void HandleCollision(Gas_Particle* particle_1, Gas_Particle* particle_2);
 
   double max_speed_;
+  bool IsOutsideBox(const Gas_Particle *p_particle) const;
 };
 
 }  // namespace container
